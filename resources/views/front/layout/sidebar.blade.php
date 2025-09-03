@@ -43,7 +43,7 @@
                     ->where('posts.language_id', $current_language_id)
                     ->where('posts.status', 'published')
                     ->exists();
-                if(!$hasPublished) continue;
+                if(!$hasPublished || empty($item->tag_name)) continue;
             @endphp
             <div class="tag-item">
                 <a href="{{ route('tag_posts_show',$item->tag_name) }}"><span class="badge bg-secondary">{{ $item->tag_name }}</span></a>

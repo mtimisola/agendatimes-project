@@ -21,6 +21,7 @@
 <div class="page-content">
     <div class="container">
         <div class="row">
+            
 
             <div class="col-lg-8 col-md-6">
                 <div class="featured-photo">
@@ -30,6 +31,7 @@
                     <div class="item">
                         <b><i class="fas fa-user"></i></b>
                         <a href="">{{ $user_data->name }}</a>
+
                     </div>
                     <div class="item">
                         <b><i class="fas fa-edit"></i></b>
@@ -55,7 +57,9 @@
                     <h2>{{ TAGS }}</h2>
                     <div class="tag-section-content">
                         @foreach($tag_data as $item)
-                            <a href="{{ route('tag_posts_show',$item->tag_name) }}"><span class="badge bg-success">{{ $item->tag_name }}</span></a>
+                            @if(!empty($item->tag_name))
+                                <a href="{{ route('tag_posts_show', $item->tag_name) }}"><span class="badge bg-success">{{ $item->tag_name }}</span></a>
+                            @endif
                         @endforeach
                     </div>
                 </div>
@@ -73,11 +77,9 @@
                     @if(session('success'))
                         <div class="alert alert-success">{{ session('success') }}</div>
                     @endif
-                    <form id="commentForm" action="{{ route('comment_store') }}" method="post" class="mb-4">
-                        <div id="replyIndicator" class="alert alert-info d-none mb-2"></div>
+                    <form action="{{ route('comment_store') }}" method="post" class="mb-4">
                         @csrf
                         <input type="hidden" name="post_id" value="{{ $post_detail->id }}">
-                        <input type="hidden" name="parent_id" value="">
                         <div class="mb-3">
                             <input type="text" name="name" class="form-control" placeholder="Your Name" required>
                         </div>
@@ -88,14 +90,10 @@
                             <textarea name="comment" class="form-control" rows="4" placeholder="Your Comment" required></textarea>
                         </div>
                         <button type="submit" class="btn btn-primary">Submit Comment</button>
-                        <button type="button" id="cancelReplyBtn" class="btn btn-secondary d-none ms-2">Cancel Reply</button>
                     </form>
                     <div class="comments-list">
                         @php
-                            $comments = \App\Models\Comment::where('post_id', $post_detail->id)
-                                        ->whereNull('parent_id')
-                                        ->orderBy('id', 'desc')
-                                        ->get();
+                            $comments = \App\Models\Comment::where('post_id', $post_detail->id)->orderBy('id', 'desc')->get();
                         @endphp
                         @if($comments->count())
                             <h5 class="mb-3">{{ $comments->count() }} Comments</h5>
@@ -116,33 +114,7 @@
                                                 @csrf
                                                 <button type="submit" class="btn btn-danger btn-sm">Dislike ({{ $comment->dislikes }})</button>
                                             </form>
-                                            <button type="button" class="btn btn-secondary btn-sm reply-btn" data-id="{{ $comment->id }}">Reply</button>
                                         </div>
-                                        @if($comment->children->count())
-                                            <div class="ms-4 mt-3">
-                                                @foreach($comment->children as $reply)
-                                                    <div class="card mb-2">
-                                                        <div class="card-body">
-                                                            <div class="d-flex justify-content-between align-items-center mb-1">
-                                                                <span class="fw-bold">{{ $reply->name }}</span>
-                                                                <span class="text-muted small">{{ $reply->created_at->format('M d, Y H:i') }}</span>
-                                                            </div>
-                                                            <div>{{ $reply->comment }}</div>
-                                                            <div class="mt-2">
-                                                                <form action="{{ route('comment_like', $reply->id) }}" method="post" style="display:inline-block;">
-                                                                    @csrf
-                                                                    <button type="submit" class="btn btn-success btn-sm">Like ({{ $reply->likes }})</button>
-                                                                </form>
-                                                                <form action="{{ route('comment_dislike', $reply->id) }}" method="post" style="display:inline-block;">
-                                                                    @csrf
-                                                                    <button type="submit" class="btn btn-danger btn-sm">Dislike ({{ $reply->dislikes }})</button>
-                                                                </form>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                @endforeach
-                                            </div>
-                                        @endif
                                     </div>
                                 </div>
                             @endforeach
@@ -158,6 +130,7 @@
                         <h2>{{ RELATED_NEWS }}</h2>
                     </div>
                     <div class="related-post-carousel owl-carousel owl-theme">
+
                         @foreach($related_post_array as $item)
                         @if($item->id == $post_detail->id)
                             @continue
@@ -197,8 +170,11 @@
                 </div>
             </div>
             <div class="col-lg-4 col-md-6 sidebar-col">
+
                 @include('front.layout.sidebar')
+
             </div>
+
 
         </div>
     </div>
@@ -206,5 +182,15 @@
 @endsection
 
 @push('scripts')
-<script src="/test-reply.js"></script>
+<script>
+    document.querySelectorAll('.reply-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            const parentId = this.getAttribute('data-id');
+            const form = document.querySelector('.comment-section form');
+            form.querySelector('input[name="parent_id"]').value = parentId;
+            form.scrollIntoView({ behavior: 'smooth' });
+            form.querySelector('textarea[name="comment"]').focus();
+        });
+    });
+</script>
 @endpush

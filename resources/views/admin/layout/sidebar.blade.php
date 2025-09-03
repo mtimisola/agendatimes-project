@@ -13,6 +13,8 @@
 
             <li class="{{ Request::is('admin/setting') ? 'active' : '' }}"><a class="nav-link" href="{{ route('admin_setting') }}"><i class="fas fa-cog"></i> <span>Setting</span></a></li>
 
+            <li class="{{ Request::is('admin/comments') ? 'active' : '' }}"><a class="nav-link" href="{{ route('admin_comments_index') }}"><i class="fas fa-comments"></i> <span>Comments</span></a></li>
+
             <li class="{{ Request::is('admin/author/*') ? 'active' : '' }}"><a class="nav-link" href="{{ route('admin_author_show') }}"><i class="fas fa-user-edit"></i> <span>Author List</span></a></li>
 
             <li class="nav-item dropdown {{ Request::is('admin/top-advertisement')||Request::is('admin/home-advertisement')||Request::is('admin/sidebar-advertisement-*') ? 'active' : '' }}">

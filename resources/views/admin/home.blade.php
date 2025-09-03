@@ -139,10 +139,5 @@
             </div>
         </div>
     </div>
-    <div class="row mt-4">
-        <div class="col-12">
-            <a href="{{ route('admin_comments_index') }}" class="btn btn-primary btn-lg w-100">View All Comments</a>
-        </div>
-    </div>
 </div>
 @endsection
