@@ -41,14 +41,8 @@
                             @endforeach
                             
                             
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                {{ GALLERY }}
-                                </a>
-                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <li><a class="dropdown-item" href="{{ route('photo_gallery') }}">{{ PHOTO_GALLERY }}</a></li>
-                                    <li><a class="dropdown-item" href="{{ route('video_gallery') }}">{{ VIDEO_GALLERY }}</a></li>
-                                </ul>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('poll_previous') }}">Polls</a>
                             </li>
                         </ul>
                     </div>

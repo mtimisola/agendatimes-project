@@ -65,14 +65,14 @@ class PollController extends Controller
         }
         $current_language_id = Language::where('short_name',$current_short_name)->first()->id;
 
-        $past_pools = OnlinePoll::with('questions.answers')
+        $all_polls = OnlinePoll::with('questions.answers')
             ->where('language_id', $current_language_id)
             ->orderBy('id', 'desc')
             ->get();
 
         // Prepare results for chart display
-        foreach ($past_pools as $pool) {
-            foreach ($pool->questions as $question) {
+        foreach ($all_polls as $poll) {
+            foreach ($poll->questions as $question) {
                 $totalVotes = $question->answers->sum('votes');
                 foreach ($question->answers as $answer) {
                     $answer['percent'] = $totalVotes > 0 ? round(($answer->votes / $totalVotes) * 100, 1) : 0;
@@ -80,6 +80,14 @@ class PollController extends Controller
             }
         }
 
-        return view('front.pool_previous', compact('past_pools'));
+        // Voting eligibility logic for blade
+        $now = now();
+        foreach ($all_polls as $poll) {
+            $poll->is_active = $poll->expiration && \Carbon\Carbon::parse($poll->expiration)->isFuture();
+            $poll->can_vote = $poll->is_active;
+            $poll->end_date = $poll->expiration ? \Carbon\Carbon::parse($poll->expiration)->format('M d, Y') : null;
+        }
+
+        return view('front.poll_previous', compact('all_polls'));
     }
 }

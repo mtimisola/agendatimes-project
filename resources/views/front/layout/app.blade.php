@@ -20,6 +20,25 @@
         <link rel="icon" type="image/png" href="{{ asset('uploads/'.$global_setting_data->favicon) }}">
 
         @include('front.layout.styles')
+        <style>
+        @media (max-width: 991.98px) {
+            .heading-area .row { flex-direction: column; }
+            .heading-area .col-md-4, .heading-area .col-md-8 {
+                max-width: 100%;
+                flex: 0 0 100%;
+            }
+            .heading-area .logo, .heading-area .ad-section-1 {
+                text-align: center;
+                margin-bottom: 10px;
+            }
+        }
+        @media (max-width: 767.98px) {
+            .heading-area .logo img, .heading-area .ad-section-1 img {
+                max-width: 90vw;
+                height: auto;
+            }
+        }
+        </style>
         
         @include('front.layout.scripts')
 
@@ -172,28 +191,25 @@
         </div>
 
         <div class="heading-area">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-4 d-flex align-items-center">
-                        <div class="logo">
-                            <a href="{{ route('home') }}">
-                                <img src="{{ asset('uploads/'.$global_setting_data->logo) }}" alt="">
+            <div class="container-fluid px-0">
+                <div class="row gx-0 align-items-center justify-content-center">
+                    <div class="col-12 col-md-4 d-flex justify-content-center py-2">
+                        <div class="logo w-100 text-center" style="padding: 0;">
+                            <a href="{{ route('home') }}" style="display: block; width: 100%;">
+                                <img src="{{ asset('uploads/'.$global_setting_data->logo) }}" alt="" style="width: 100%; max-width: 350px; height: auto; margin: 0 auto; display: block;">
                             </a>
                         </div>
                     </div>
-                    <div class="col-md-8">
-
+                    <div class="col-12 col-md-8 d-flex justify-content-center py-2">
                         @if($global_top_ad_data->top_ad_status == 'Show')
-                        <div class="ad-section-1">
+                        <div class="ad-section-1 w-100 text-center">
                             @if($global_top_ad_data->top_ad_url == '')
-                                <img src="{{ asset('uploads/'.$global_top_ad_data->top_ad) }}" alt="">
+                                <img src="{{ asset('uploads/'.$global_top_ad_data->top_ad) }}" alt="" style="max-width: 100%; height: auto;">
                             @else
-                                <a href="{{ $global_top_ad_data->top_ad_url }}"><img src="{{ asset('uploads/'.$global_top_ad_data->top_ad) }}" alt=""></a>
+                                <a href="{{ $global_top_ad_data->top_ad_url }}"><img src="{{ asset('uploads/'.$global_top_ad_data->top_ad) }}" alt="" style="max-width: 100%; height: auto;"></a>
                             @endif
-                            
                         </div>
                         @endif
-
                     </div>
                 </div>
             </div>

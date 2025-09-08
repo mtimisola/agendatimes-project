@@ -63,14 +63,14 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header bg-secondary text-white">
-                        <h6 class="mb-0">Other Active Pools</h6>
+                        <h6 class="mb-0">Other Active Polls</h6>
                     </div>
                     <div class="card-body">
                         <ul class="list-group">
-                            @foreach($active_pools as $active)
+                            @foreach($active_polls as $active)
                                 <li class="list-group-item d-flex justify-content-between align-items-center">
                                     <span>{{ $active->question }}</span>
-                                    <a href="{{ route('admin_online_poll_show', $active->id) }}" class="btn btn-sm btn-outline-info">View Pool</a>
+                                    <a href="{{ route('admin_online_poll_show', $active->id) }}" class="btn btn-sm btn-outline-info">View Poll</a>
                                 </li>
                             @endforeach
                         </ul>

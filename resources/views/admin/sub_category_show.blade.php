@@ -32,7 +32,7 @@
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $row->sub_category_name }}</td>
                                     <td>
-                                        {{ $row->rCategory->category_name }}
+                                        {{ optional($row->rCategory)->category_name }}
                                     </td>
                                     <td>{{ $row->show_on_menu }}</td>
                                     <td>{{ $row->show_on_home }}</td>

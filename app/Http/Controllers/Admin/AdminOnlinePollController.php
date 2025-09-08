@@ -11,8 +11,8 @@ class AdminOnlinePollController extends Controller
     public function show()
     {
         $online_poll_data = OnlinePoll::orderBy('id','desc')->get();
-        $active_pools = OnlinePoll::where('expiration', '>', now())->orderBy('id','desc')->get();
-        return view('admin.online_poll_show', compact('online_poll_data', 'active_pools'));
+    $active_polls = OnlinePoll::where('expiration', '>', now())->orderBy('id','desc')->get();
+    return view('admin.online_poll_show', compact('online_poll_data', 'active_polls'));
     }
 
     public function create()
